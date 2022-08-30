@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <ApplicationIcon />
+    <Win32Resource />
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +13,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Business\Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\Images\" />
   </ItemGroup>
 
 </Project>
