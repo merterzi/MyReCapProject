@@ -73,5 +73,24 @@ namespace Business.Concrete
             }
             return new SuccessResult();
         }
+
+        private IResult CheckIfCarImageExists(int carId)
+        {
+            var result = _carImageDal.GetAll(c => c.CarId == carId);
+
+            if (result.Count > 0)
+            {
+                return new SuccessResult();
+            }
+
+            return new ErrorResult();
+        }
+
+        private IDataResult<List<CarImage>> GetDefaultImage(int carId)
+        {
+            List<CarImage> carImages = new List<CarImage>();
+            carImages.Add(new CarImage { CarId = carId, Date = DateTime.Now, ImagePath = "wwwroot\\Upload\\defaultImage.png" });
+            return new SuccessDataResult<List<CarImage>>(carImages);
+        }
     }
 }
