@@ -19,6 +19,9 @@ using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using Core.Utilities.Security.JWT;
 using Core.Utilities.Security.Encryption;
+using Core.Extensions;
+using Core.Utilities.IoC;
+using Core.DependencyResolvers;
 
 namespace WebAPI
 {
@@ -69,6 +72,8 @@ namespace WebAPI
                     IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)    
                 };
             });
+
+            services.AddDependencyResolvers(new ICoreModule[] { new CoreModule() });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
