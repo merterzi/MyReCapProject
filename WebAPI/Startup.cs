@@ -56,6 +56,7 @@ namespace WebAPI
             //services.AddSingleton<IUserDal, EfUserDal>();
             //services.AddSingleton<IRentalDal, EfRentalDal>();
 
+            services.AddCors();
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -86,9 +87,11 @@ namespace WebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
             }
 
-            app.UseDefaultFiles();
+            //app.UseDefaultFiles();
 
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
+
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
             app.UseHttpsRedirection();
 
