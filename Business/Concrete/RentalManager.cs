@@ -24,12 +24,13 @@ namespace Business.Concrete
 
         public IResult Add(Rental rental)
         {
-            //IResult result = BusinessRules.Run(CheckIfReturnDateIsNull(rental));
+            IResult result = BusinessRules.Run(CheckIfReturnDateIsNull(rental));
 
-            //if (result != null)
-            //{
-            //    return result;
-            //}
+            if (result != null)
+            {
+                return result;
+            }
+
             _rentalDal.Add(rental);
             return new SuccessResult();
         }
@@ -58,14 +59,18 @@ namespace Business.Concrete
 
         private IResult CheckIfReturnDateIsNull(Rental rental)
         {
-            var result = _rentalDal.Get(r => r.CarId == rental.CarId && r.ReturnDate != null);
+            var results = _rentalDal.GetAll(r => r.CarId == rental.CarId);
 
-            if (result != null)
+            foreach (var result in results)
             {
-                _rentalDal.Add(rental);
-                return new SuccessResult();
+                if (result.ReturnDate == null ||
+                    (rental.RentDate >= result.RentDate && rental.RentDate <= result.ReturnDate) ||
+                    (rental.ReturnDate >= result.RentDate && rental.RentDate <= result.ReturnDate))
+                {
+                    return new ErrorResult(Messages.RentalFailed);
+                }
             }
-            return new ErrorResult();
+            return new SuccessResult();
         }
     }
 }

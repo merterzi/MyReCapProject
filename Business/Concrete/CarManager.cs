@@ -62,23 +62,28 @@ namespace Business.Concrete
 
         public IDataResult<List<CarDetailDto>> GetCarDetailsByBrandId(int id)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByBrandId(id));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.BrandId == id));
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetailsByCarId(int id)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByCarId(id));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.Id == id));
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetailsByColorId(int id)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetailsByColorId(id));
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.ColorId == id));
         }
 
         [CacheAspect]
         public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.BrandId == id));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarsByBrandIdAndColorId(int brandId, int colorId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => (c.BrandId == brandId && c.ColorId == colorId) || c.BrandId == brandId || c.ColorId == colorId));
         }
 
         [CacheAspect]
